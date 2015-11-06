@@ -26,6 +26,11 @@ import com.internet.cms.service.user.IRoleService;
 import com.internet.cms.service.user.IUserService;
 import com.internet.cms.web.CmsSessionContext;
 
+/**
+ * Description: 登录
+ * All Rights Reserved.
+ * @version 1.0  2015年11月6日 上午10:15:48  by addison
+ */
 @Controller
 public class LoginController {
 	private IUserService userService;

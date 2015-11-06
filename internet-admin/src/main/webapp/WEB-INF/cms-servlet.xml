@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 		http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
-	
+	<!-- 相当于注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter -->
 	<mvc:annotation-driven/>
 	<mvc:resources location="/resources/" mapping="/resources/**"/>
 	<!-- 拦截器权限配置 -->
@@ -18,14 +18,17 @@
 			<bean class="com.internet.cms.web.AuthInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
+	<!-- 扫描位置 -->
 	<context:component-scan base-package="com.internet.cms.controller"/>
-	<dwr:controller id="dwrController" debug="false"/>
-	<dwr:annotation-config id="dwrAnnotationConfig" />
-  	<dwr:annotation-scan base-package="com.internet.cms.dwr" scanDataTransferObject="true"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"/>
 		<property name="suffix" value=".jsp"/>
 	</bean>
+	
+	<!-- DWR 配置 -->
+	<dwr:controller id="dwrController" debug="false"/>
+	<dwr:annotation-config id="dwrAnnotationConfig" />
+  	<dwr:annotation-scan base-package="com.internet.cms.dwr" scanDataTransferObject="true"/>
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 	  <property value="true" name="alwaysUseFullPath"></property> 
 	  <property name="mappings">
@@ -33,8 +36,9 @@
 	      <prop key="/dwr/**/*">dwrController</prop>
 	    </props>
 	 </property> 
+	 
 	</bean>
-	
+	<!-- 异常统一处理 -->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>

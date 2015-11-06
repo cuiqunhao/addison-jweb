@@ -33,7 +33,8 @@ version="2.5">
     <param-name>contextConfigLocation</param-name>
     <param-value>
     	classpath*:beans.xml,
-    	classpath*:cms-spring-mybatis.xml<!-- ,
+    	classpath*:cms-spring-mybatis.xml
+    	<!-- ,
     	classpath*:cms-spring-jms.xml -->
     </param-value>
   </context-param>

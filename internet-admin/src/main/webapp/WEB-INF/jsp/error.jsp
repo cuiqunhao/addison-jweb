@@ -17,22 +17,22 @@
 							<h1 class="grey lighter smaller">
 								<span class="blue bigger-125">
 									<i class="ace-icon fa fa-random"></i>
-									Tip
+									提示：
 								</span>
-								Something Went Wrong
+								发生了运行错误
 							</h1>
 
 							<hr />
 							<h3 class="lighter smaller">
-								But we are working
+								但是网站
 								<i class="ace-icon fa fa-wrench icon-animated-wrench bigger-125"></i>
-								on it!
+								运行正常！
 							</h3>
 
 							<div class="space"></div>
 
 							<div>
-								<h4 class="lighter smaller">Meanwhile, try one of the following:</h4>
+								<h4 class="lighter smaller">可能因为以下原因引起:</h4>
 
 								<ul class="list-unstyled spaced inline bigger-110 margin-15">
 									<li>

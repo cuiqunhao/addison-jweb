@@ -22,11 +22,15 @@ import com.internet.cms.dto.TreeDto;
 import com.internet.cms.model.Channel;
 import com.internet.cms.model.ChannelTree;
 import com.internet.cms.model.ChannelType;
-import com.internet.cms.model.dept.Dept;
 import com.internet.cms.page.Pager;
 import com.internet.cms.service.IIndexService;
 import com.internet.cms.service.topic.IChannelService;
 
+/**
+ * Description: 栏目管理
+ * All Rights Reserved.
+ * @version 1.0  2015年11月6日 上午10:55:08  by addison
+ */
 @RequestMapping("/admin/channel")
 @Controller
 @AuthClass

@@ -1,6 +1,5 @@
 package com.internet.cms.controller.dictionary;
 
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -13,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.internet.cms.auth.AuthClass;
-import com.internet.cms.model.User;
 import com.internet.cms.model.dictionary.Dictionary;
 import com.internet.cms.page.Pager;
 import com.internet.cms.service.dictionary.IDictionaryService;
 
+/**
+ * Description: 数据字典
+ * All Rights Reserved.
+ * @version 1.0  2015年11月6日 上午10:14:24  by addison
+ */
 @RequestMapping("/admin/dictionary")
 @Controller
 @AuthClass

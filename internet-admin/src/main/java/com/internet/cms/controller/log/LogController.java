@@ -27,6 +27,11 @@ import com.internet.cms.basic.util.DataUtil;
 import com.internet.cms.basic.util.string.StringEncodeUtils;
 
 
+/**
+ * Description: 日志管理
+ * All Rights Reserved.
+ * @version 1.0  2015年11月6日 上午10:13:44  by addison
+ */
 @RequestMapping("/admin/log")
 @Controller
 @AuthClass

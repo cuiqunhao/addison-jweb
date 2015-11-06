@@ -18,6 +18,11 @@ import com.internet.cms.page.Pager;
 import com.internet.cms.service.dept.IDeptService;
 import com.internet.cms.service.jms.utils.JMSProducer;
 
+/**
+ * Description: 部门管理
+ * All Rights Reserved.
+ * @version 1.0  2015年11月6日 上午10:14:51  by addison
+ */
 @RequestMapping("/admin/dept")
 @Controller
 @AuthClass

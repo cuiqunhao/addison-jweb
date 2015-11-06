@@ -16,10 +16,10 @@
 							<div class="center">
 								<h1>
 									<i class="ace-icon fa fa-leaf green"></i>
-									<span class="red">66</span>
-									<span class="white" id="id-text2">Internet</span>
+									<span class="red">CC</span>
+									<span class="white" id="id-text2">Tec</span>
 								</h1>
-								<h4 class="blue" id="id-company-text">&copy; 66科技</h4>
+								<h4 class="blue" id="id-company-text">&copy; CC科技</h4>
 							</div>
 
 							<div class="space-6"></div>
@@ -122,12 +122,12 @@
 										<div class="widget-main">
 											<h4 class="header red lighter bigger">
 												<i class="ace-icon fa fa-key"></i>
-												Retrieve Password
+												重置密码
 											</h4>
 
 											<div class="space-6"></div>
 											<p>
-												Enter your email and to receive instructions
+												输入您的邮箱
 											</p>
 
 											<form>
@@ -142,7 +142,7 @@
 													<div class="clearfix">
 														<button type="button" class="width-35 pull-right btn btn-sm btn-danger">
 															<i class="ace-icon fa fa-lightbulb-o"></i>
-															<span class="bigger-110">Send Me!</span>
+															<span class="bigger-110">确定</span>
 														</button>
 													</div>
 												</fieldset>
@@ -151,7 +151,7 @@
 
 										<div class="toolbar center">
 											<a href="#" data-target="#login-box" class="back-to-login-link">
-												Back to login
+												返回登录
 												<i class="ace-icon fa fa-arrow-right"></i>
 											</a>
 										</div>
@@ -163,11 +163,11 @@
 										<div class="widget-main">
 											<h4 class="header green lighter bigger">
 												<i class="ace-icon fa fa-users blue"></i>
-												New User Registration
+												用户注册
 											</h4>
 
 											<div class="space-6"></div>
-											<p> Enter your details to begin: </p>
+											<p> 输入您的信息: </p>
 
 											<form>
 												<fieldset>
@@ -202,8 +202,8 @@
 													<label class="block">
 														<input type="checkbox" class="ace" />
 														<span class="lbl">
-															I accept the
-															<a href="#">User Agreement</a>
+															我接受
+															<a href="#">《用户协议》</a>
 														</span>
 													</label>
 
@@ -212,11 +212,11 @@
 													<div class="clearfix">
 														<button type="reset" class="width-30 pull-left btn btn-sm">
 															<i class="ace-icon fa fa-refresh"></i>
-															<span class="bigger-110">Reset</span>
+															<span class="bigger-110">重置</span>
 														</button>
 
 														<button type="button" class="width-65 pull-right btn btn-sm btn-success">
-															<span class="bigger-110">Register</span>
+															<span class="bigger-110">注册</span>
 
 															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 														</button>
@@ -228,7 +228,7 @@
 										<div class="toolbar center">
 											<a href="#" data-target="#login-box" class="back-to-login-link">
 												<i class="ace-icon fa fa-arrow-left"></i>
-												Back to login
+												返回登录
 											</a>
 										</div>
 									</div><!-- /.widget-body -->
