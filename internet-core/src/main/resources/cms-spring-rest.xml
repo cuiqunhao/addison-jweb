@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+         http://www.springframework.org/schema/tx 
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<bean class="org.apache.wink.spring.Registrar">
+		<property name="instances">
+			<set>
+				<ref local="commonlinkServiceResource" />
+				<ref local="bookmarkServiceResource" />
+				<ref local="subscribeServiceResource" />
+				<ref local="taskServiceResource" />
+				<ref local="fileuploadServiceResource" />
+				<ref local="qrServiceResource" />
+			</set>
+		</property>
+	</bean>
+	<!-- 公共连接管理-->
+	<bean id="commonlinkServiceResource" class="com.internet.cms.controller.commonlink.CommonlinkServiceResource" />
+	<!-- 我的收藏管理 -->
+    <bean id="bookmarkServiceResource" class="com.internet.cms.controller.bookmark.BookmarkServiceResource" />
+    <!-- 我的订阅 -->
+    <bean id="subscribeServiceResource" class="com.internet.cms.controller.subscribe.SubscribeServiceResource" />
+    <!-- 我的待办 -->
+    <bean id="taskServiceResource" class="com.internet.cms.controller.task.TaskServiceResource" />
+    <!-- 上传服务 -->
+    <bean id="fileuploadServiceResource" class="com.internet.cms.controller.fileupload.FileUploadServiceResource" />
+    <!-- 生成二维码 -->
+    <bean id="qrServiceResource" class="com.internet.cms.controller.qr.QRServiceResource" />
+</beans>

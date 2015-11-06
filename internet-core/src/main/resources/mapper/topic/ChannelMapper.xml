@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.IChannelDao">
+	<!-- 栏目树形对象 -->
+	<resultMap id="ChannelTree" type="com.internet.cms.model.ChannelTree">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="pid" property="pid" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 栏目对象 -->
+	<resultMap id="Channel" type="com.internet.cms.model.Channel">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="custom_link" property="customLink" jdbcType="VARCHAR" />
+		<id column="custom_link_url" property="customLinkUrl" jdbcType="VARCHAR" />
+		<id column="is_index" property="isIndex" jdbcType="VARCHAR" />
+		<id column="is_top_nav" property="isTopNav" jdbcType="VARCHAR" />
+		<id column="recommend" property="recommend" jdbcType="VARCHAR" />
+		<id column="status" property="status" jdbcType="VARCHAR" />
+		<id column="orders" property="orders" jdbcType="VARCHAR" />
+		<id column="pid" property="pid" jdbcType="VARCHAR" />
+		<id column="nav_order" property="navOrder" jdbcType="VARCHAR" />
+		<id column="type" property="catalogType" jdbcType="VARCHAR" />
+		<id column="showTypeName" property="showTypeName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+
+	<!-- 所有的栏目列表信息(把所有的栏目获取并生成一颗完整的树)-->
+	<select id="generateTree" resultMap="ChannelTree">
+		select id,name,pid from t_channel order by orders
+	</select>
+	
+	<!-- 根据栏目id获取当前栏目信息 -->
+	<select id="load" resultMap="Channel">
+		select CASE
+				c.type
+				when 1 then 'NAV_CHANNEL'
+				when 2 then 'TOPIC_LIST'
+				when 3 then 'TOPIC_CONTENT'
+				when 4 then 'TOPIC_IMG'
+				else 'NAV_CHANNEL' 
+			end as showTypeName, 
+			c.id,c.name,c.pid,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order from t_channel c where  c.id = #{id}
+	</select>
+	
+	<!-- 根据父栏目id获取子栏目列表 -->
+	<select id="listByParent" resultMap="Channel">
+		<if test="pid == null or pid == 0">
+			select c.id,c.name,c.pid,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order,c.type from t_channel c where c.pid is null order by c.orders
+		</if>
+		<if test="pid != null and pid != 0">
+		select  c.id,c.name,c.pid,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order,c.type  from t_channel c where c.pid = #{pid} order by c.orders
+		</if>
+	</select>
+	
+	<!-- 根据父栏目获取子栏目的最大的排序号 -->
+	<select id="getMaxOrderByParent" resultType="int">
+		<if test="pid == null or pid == 0">
+			select IFNULL(max(c.orders),0) from t_channel c where c.pid is null
+		</if>
+		<if test="pid != null and pid != 0">
+			select IFNULL(max(c.orders),0) from t_channel c where c.pid = #{pid}
+		</if>
+	</select>
+	
+	<!-- 添加栏目 -->
+	<insert id="add" parameterType="com.internet.cms.model.Channel">
+		insert into t_channel
+			(name,custom_link,custom_link_url,type,is_index,is_top_nav,recommend,status,orders,pid,nav_order)
+		values
+		<if test="pid == null or pid == 0">
+			(#{name},#{customLink},#{customLinkUrl},#{catalogType},#{isIndex},#{isTopNav},#{recommend},#{status},#{orders},null,#{navOrder})
+		</if>
+		<if test="pid != null and pid != 0">
+			(#{name},#{customLink},#{customLinkUrl},#{catalogType},#{isIndex},#{isTopNav},#{recommend},#{status},#{orders},#{pid},#{navOrder})
+		</if>	
+	</insert>
+	
+	<!-- 重新生成导航栏目(页面静态化) -->
+	<select id="listTopNavChannel" resultMap="Channel">
+		select c.id,c.name,c.custom_link,c.custom_link_url from t_channel c where c.status=0 and c.is_top_nav=1 order by c.nav_order
+	</select>
+	
+	<!-- 更新栏目 -->
+	<update id="update" parameterType="com.internet.cms.model.Channel">
+		update t_channel set 
+			name= #{name},
+			custom_link = #{customLink},
+			custom_link_url = #{customLinkUrl},
+			type = #{catalogType},
+			is_index = #{isIndex},
+			is_top_nav = #{isTopNav},
+			recommend = #{recommend},
+			status = #{status},
+			orders = #{orders},
+			nav_order = #{navOrder}
+		where id = #{id}
+	</update>
+	
+	<!-- 所有的可以发布文章的栏目，栏目的状态必须为启用状态  -->
+	<select id="listPublishChannel" resultMap="Channel">
+		select c.id,c.name from t_channel c where c.status=0 and c.type != #{catalogType}
+	</select>
+	
+	<!-- 根据栏目id查询当前栏目是否是首页栏目（如果是首页则需要重新更新首页栏目） -->
+	<select id="isUpdateIndex" resultType="int">
+		select count(*) from t_channel c where c.is_index = 1 and c.status=0 and c.id= #{channelId}
+	</select>
+	
+	<select id="listAllIndexChannel" resultMap="Channel">
+		select c.id,c.name from t_channel c where c.status = 0 and c.is_index = 1
+		<if test="catalogType != '' and catalogType != null ">
+			and c.type = #{catalogType}
+		</if>	
+	</select>
+	
+	<delete id="delete">
+		delete from t_channel where id = #{id}
+	</delete>
+	
+	<select id="loadFirstChannelByNav" resultMap="Channel">
+		select c.id,c.name,c.type from t_channel c where c.pid = #{pid} order by c.orders
+	</select>
+	
+	<select id="listUseChannelByParent" resultMap="Channel">
+		<if test="pid == null or pid == 0">
+			select c.id,c.name,c.pid,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order,c.type from t_channel c where c.pid is null and c.status=0 order by c.orders
+		</if>
+		<if test="pid != null and pid != 0">
+			select c.id,c.name,c.pid,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order,c.type from t_channel c left join t_channel c2  on(c2.id=c.id) where c2.id = #{pid} and c2.status=0 order by c.orders
+		</if>
+	</select>
+	
+	<select id="listChannelByParentCount" resultType="int">
+		<if test="pid == null or pid == 0">
+			select count(1) from t_channel c where c.pid is null
+		</if>
+		<if test="pid != null and pid != 0">
+		select count(1) from t_channel c where c.pid = #{pid}
+		</if>
+	</select>
+	
+	<!-- 根据父栏目id获取子栏目列表 -->
+	<select id="listChannelByParent" resultMap="Channel">
+		<if test="pid == null or pid == 0">
+			select c.id,c.name,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order,c.type from t_channel c where c.pid is null order by c.orders
+		</if>
+		<if test="pid != null and pid != 0">
+		select  c.id,c.name,c.custom_link,c.custom_link_url,c.is_index,c.is_top_nav,c.recommend,c.status,c.orders,c.pid,c.nav_order,c.type  from t_channel c where c.pid = #{pid} order by c.orders
+		</if>
+	</select>
+</mapper>

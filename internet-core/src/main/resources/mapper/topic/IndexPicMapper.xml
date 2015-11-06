@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.IIndexPicDao">
+	<!-- 文章对象 -->
+	<resultMap id="IndexPic" type="com.internet.cms.model.IndexPic">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="title" property="title" jdbcType="VARCHAR" />
+		<id column="sub_title" property="subTitle" jdbcType="VARCHAR" />
+		<id column="link_type" property="linkType" jdbcType="VARCHAR" />
+		<id column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+		<id column="new_name" property="newName" jdbcType="VARCHAR" />
+		<id column="old_name" property="oldName" jdbcType="VARCHAR" />
+		<id column="status" property="status" jdbcType="VARCHAR" />
+		<id column="pos" property="pos" jdbcType="VARCHAR" />
+		<id column="create_date" property="createDate" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getMinAdnMaxPos" resultType="String">
+		select concat(max(pos),',',min(pos)) from t_index_pic
+	</select>
+	
+	<select id="findIndexPicCount" resultType="int">
+		select count(*) from t_index_pic t
+	</select>
+	<select id="findIndexPic" resultMap="IndexPic">
+		select t.id,t.title,t.sub_title,t.link_type,t.link_url,t.new_name,t.old_name,t.status,t.pos,t.create_date from t_index_pic t
+	</select>
+	
+	<select id="load"  resultMap="IndexPic">
+		select t.id,t.title,t.sub_title,t.link_type,t.link_url,t.new_name,t.old_name,t.status,t.pos,t.create_date from t_index_pic t where t.id = #{id}
+	</select>
+	
+	<insert id="add" parameterType="com.internet.cms.model.IndexPic">
+		insert into t_index_pic
+			(title,sub_title,link_type,link_url,new_name,old_name,status,pos,create_date)
+		values
+			(#{title},#{subTitle},#{linkType},#{linkUrl},#{newName},#{oldName},#{status},#{pos},#{createDate})
+	</insert>
+	
+	<delete id="delete">
+		delete from t_index_pic where id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="com.internet.cms.model.IndexPic">
+		update t_index_pic 
+		set
+			title = #{title} ,
+			sub_title = #{subTitle},
+			link_type = #{linkType},
+			link_url = #{linkUrl},
+			new_name = #{newName},
+			old_name = #{oldName},
+			status = #{status},
+			pos = #{pos},
+			create_date = #{createDate}
+		where 
+			id = #{id}
+	</update>
+	
+	<select id="listIndexPicByNum" resultMap="IndexPic">
+		select * from t_index_pic t where t.status=1 order by t.pos
+	</select>
+
+	
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.commonlink.ICommonlinkDao">
+	<resultMap id="Commonlink" type="com.internet.cms.model.commonlink.Commonlink">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="url" property="url" jdbcType="VARCHAR" />
+		<id column="typeId" property="typeId" jdbcType="VARCHAR" />
+		<id column="userId" property="userId" jdbcType="VARCHAR" />
+		<id column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<id column="lastmodifyDate" property="lastmodifyDate" jdbcType="VARCHAR" />
+		<id column="newWin" property="newWin" jdbcType="INTEGER" />
+		<id column="orderId" property="orderId" jdbcType="INTEGER" />
+		<id column="position" property="position" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 添加公共链接-->	
+	<insert id="addCommonlink" parameterType="com.internet.cms.model.commonlink.Commonlink">
+		insert into t_commonlink
+			(id,name,url,typeId,userId,createDate,lastmodifyDate,newWin,orderId,position)
+		values
+			(#{id},#{name},#{url},#{typeId},#{userId},#{createDate},#{lastmodifyDate},#{newWin},#{orderId},#{position})
+	</insert>
+	
+	<!-- 删除公共链接 -->
+	<delete id="deleteCommonlink" parameterType="com.internet.cms.model.commonlink.Commonlink">
+		delete from t_commonlink where id = #{id} and userId = #{userId}
+	</delete>
+	
+	<!-- 更新公共链接 -->	
+	<update id="updateCommonlink" parameterType="com.internet.cms.model.commonlink.Commonlink">
+		update t_commonlink 
+	    set name = #{name}, 
+			url = #{url},
+			typeId = #{typeId},
+			lastmodifyDate = #{lastmodifyDate},
+			newWin = #{newWin},
+			position = #{position}
+		where id = #{id} and userId = #{userId}
+	</update>
+	
+	<!-- 根据用户id查询用户公共链接列表 -->
+	<select id="findCommonlinkList" parameterType="com.internet.cms.model.commonlink.Commonlink" resultMap="Commonlink">
+		select 
+			t.*
+		from t_commonlink t where t.userId = #{userId}
+		and t.typeId in
+		 <foreach item="item" index="index" collection="types" 
+                open="(" separator="," close=")">
+               #{item}
+          </foreach>
+	</select>
+	
+	
+	<select id="findCommonlinkCountByNameUrl" parameterType="com.internet.cms.model.commonlink.Commonlink" resultType="int">
+		select 
+			count(1) as count
+		from t_commonlink t where t.userId = #{userId} and t.name = #{name} and t.url = #{url}
+	</select>
+	 
+	<select id="getMaxCommonlinkOrderId" parameterType="com.internet.cms.model.commonlink.Commonlink" resultType="Integer">
+		select 
+			max(t.orderId)
+		from t_commonlink t where t.userId = #{userId}
+	</select>
+	
+	<select id="findCommonlinkCountByTypeId" parameterType="com.internet.cms.model.commonlink.Commonlink" resultType="int">
+		select count(1) from t_commonlink t where t.userId = #{userId} and t.typeId = #{typeId}
+	</select>
+	
+	<select id="findCommonlinkListByTypeId" parameterType="com.internet.cms.model.commonlink.Commonlink" resultMap="Commonlink">
+		select 
+			t.*
+		from t_commonlink t where t.userId = #{userId} and t.typeId = #{typeId}
+	</select>
+	
+	
+</mapper>

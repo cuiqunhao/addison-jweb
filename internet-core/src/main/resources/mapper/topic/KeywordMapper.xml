@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.IKeywordDao">
+	<resultMap id="Keyword" type="com.internet.cms.model.Keyword">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="name_full_py" property="nameFullPy" jdbcType="VARCHAR" />
+		<id column="name_short_py" property="nameShortPy" jdbcType="VARCHAR" />
+		<id column="times" property="times" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 根据关键字查询在当前数据库中是否存在  -->
+	<select id="findKeywordByName" resultMap="Keyword">
+		select * from t_keyword k where k.name= #{name}
+	</select>
+	
+	<!-- 添加关键字 -->
+	<insert id="add" parameterType="com.internet.cms.model.Keyword">
+		insert into t_keyword(name,name_full_py,name_short_py,times)values(#{name},#{nameFullPy},#{nameShortPy},#{times})
+	</insert>
+	
+	<!-- 更新关键字 -->
+	<insert id="update" parameterType="com.internet.cms.model.Keyword">
+		update t_keyword set times=#{times} where name=#{name}
+	</insert>
+	
+	<!-- 根据关键字联想已经在数据库中存在的关键字（创建文档时输入关键字并联想） -->
+	<select id="listKeywordStringByCon" resultType="String">
+		select name from t_keyword where name like #{name} or name_full_py like #{name} or name_short_py like #{name}
+	</select>
+
+	
+</mapper>

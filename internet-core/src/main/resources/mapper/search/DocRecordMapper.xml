@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.search.DocRecordMapper">
+	<resultMap id="docRecordMap" type="com.internet.cms.model.search.DocRecord">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="filename" property="fileName" jdbcType="VARCHAR" />
+		<result column="doctype" property="docType" jdbcType="INTEGER" />
+		<result column="lastmodify" property="lastModify" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="createDoc" parameterType="com.internet.cms.model.search.DocRecord">
+		insert into
+		t_docrecord(filename,doctype,lastmodify)
+		values
+		(#{fileName,jdbcType=VARCHAR},
+		#{docType,jdbcType=INTEGER},
+		#{lastModify,jdbcType=INTEGER})
+	</insert>
+	
+	<select id="getDocByFileName" parameterType="java.lang.String" resultType="com.internet.cms.model.search.DocRecord">
+		select * from t_docrecord where filename=#{fileName}
+	</select>
+	
+	<select id="getDocById" parameterType="int" resultType="com.internet.cms.model.search.DocRecord">
+		select * from t_docrecord where id=#{id}
+	</select>
+
+	<select id="getDocTopOne" parameterType="java.lang.String" resultType="com.internet.cms.model.search.DocRecord">
+		select * from t_docrecord where doctype=#{docType} order by
+		lastmodify desc limit 0,1
+	</select>
+
+	<delete id="deleteDocById" parameterType="int">
+		DELETE FROM t_docrecord
+		WHERE id=#{id}
+	</delete>
+	<delete id="deleteAllDoc">
+		DELETE FROM t_docrecord
+	</delete>
+</mapper>

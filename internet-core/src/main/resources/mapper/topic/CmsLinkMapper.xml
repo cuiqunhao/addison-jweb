@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.ICmsLinkDao">
+	<resultMap id="CmsLink" type="com.internet.cms.model.CmsLink">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="title" property="title" jdbcType="VARCHAR" />
+		<id column="url" property="url" jdbcType="VARCHAR" />
+		<id column="type" property="type" jdbcType="VARCHAR" />
+		<id column="new_win" property="newWin" jdbcType="VARCHAR" />
+		<id column="url_id" property="urlId" jdbcType="VARCHAR" />
+		<id column="url_class" property="urlClass" jdbcType="VARCHAR" />
+		<id column="pos" property="pos" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="findByTypeCommonSql">
+		<if test="type != null and type != ''" >
+			and l.type = #{type}
+		</if>
+	</sql>
+	
+	<select id="findByTypeCount" resultType="int">
+		select count(*) from t_cms_link l where 1=1
+		<include refid="findByTypeCommonSql"/>
+	</select>
+	
+	<select id="findByType" resultMap="CmsLink">
+		select l.id,l.title,l.url,l.type,l.new_win,l.url_id,l.url_class,l.pos from t_cms_link l where 1=1
+		<include refid="findByTypeCommonSql"/>
+	</select>
+	
+	<select id="listByType" resultMap="CmsLink">
+		select l.id,l.title,l.url,l.type,l.new_win,l.url_id,l.url_class,l.pos from t_cms_link l where l.type=#{type} order by l.pos
+	</select>
+	
+	<select id="listAllType" resultType="String">
+		select l.type from t_cms_link l group by l.type
+	</select>
+	
+	<select id="getMinAndMaxPos" resultType="String">
+		select concat(max(pos),',',min(pos)) from t_cms_link
+	</select>
+	
+	<insert id="add" parameterType="com.internet.cms.model.CmsLink">
+		insert into t_cms_link 
+			(title,url,type,new_win,url_id,url_class,pos)
+		values
+			(#{title},#{url},#{type},#{newWin},#{urlId},#{urlClass},#{pos})
+	</insert>
+	
+	<select id="load" resultMap="CmsLink">
+		select l.id,l.title,l.url,l.type,l.new_win,l.url_id,l.url_class,l.pos from t_cms_link l where l.id = #{id}
+	</select>
+	
+	<update id="update" parameterType="com.internet.cms.model.CmsLink">
+		update t_cms_link set title=#{title},url=#{url},type=#{type},new_win=#{newWin},url_id=#{urlId},url_class=#{urlClass},pos= #{pos}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_cms_link where id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.bookmark.IBookmarkTypeDao">
+	<resultMap id="BookmarkType" type="com.internet.cms.model.bookmark.BookmarkType">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="userId" property="userId" jdbcType="VARCHAR" />
+		<id column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<id column="lastmodifyDate" property="lastmodifyDate" jdbcType="VARCHAR" />
+		<id column="orderId" property="orderId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 添加公共链接分类 -->	
+	<insert id="addBookmarkType" parameterType="com.internet.cms.model.bookmark.BookmarkType">
+		insert into t_bookmark_type 
+			(id,name,userId,createDate,lastmodifyDate,orderId)
+		values
+			(#{id},#{name},#{userId},#{createDate},#{lastmodifyDate},#{orderId})
+	</insert>
+	
+	<!-- 删除公共链接分类 -->	
+	<delete id="deleteBookmarkType" parameterType="com.internet.cms.model.bookmark.BookmarkType">
+		delete from t_bookmark_type where id = #{id} and userId = #{userId}
+	</delete>
+	
+	<!-- 更新公共链接分类 -->	
+	<update id="updateBookmarkType" parameterType="com.internet.cms.model.bookmark.BookmarkType">
+		update t_bookmark_type set name = #{name}, lastmodifyDate = #{lastmodifyDate} where id = #{id} and userId = #{userId}
+	</update>
+	
+	<!-- 根据用户id查询用户公共链接分类列表 -->
+	<select id="findBookmarkTypeList" parameterType="com.internet.cms.model.bookmark.BookmarkType" resultMap="BookmarkType">
+		select 
+			t.id, 
+			t.name,
+			t.userId,
+			date_format(t.createDate,'%Y-%m-%d %H:%i:%s') as createDate,
+			date_format(t.lastmodifyDate,'%Y-%m-%d %H:%i:%s') as lastmodifyDate,
+			t.orderId as orderId
+		from t_bookmark_type t where t.userId = #{userId}
+	</select>
+	
+	<select id="findBookmarkTypeCountByName" parameterType="com.internet.cms.model.bookmark.BookmarkType" resultType="int">
+		select 
+			count(1) as count
+		from t_bookmark_type t where t.userId = #{userId} and t.name = #{name}
+	</select>
+	
+	<select id="getMaxBookmarkTypeOrderId" parameterType="com.internet.cms.model.bookmark.BookmarkType" resultType="Integer">
+		select 
+			max(t.orderId)
+		from t_bookmark_type t where t.userId = #{userId}
+	</select>
+	
+	<select id="findBookmarkTypeCount" parameterType="com.internet.cms.model.bookmark.BookmarkType" resultType="int">
+		select 
+			count(1) as count
+		from t_bookmark_type t where t.userId = #{userId}
+	</select>
+	
+	
+</mapper>

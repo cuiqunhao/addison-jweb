@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.IChannelDao">
+	<!-- 群组栏目关联关系对象 -->
+	<resultMap id="GroupChannel" type="com.internet.cms.model.GroupChannel">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<id column="g_id" property="groupId" jdbcType="VARCHAR" />
+		<id column="c_id" property="channelId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 栏目树形对象 -->
+	<resultMap id="ChannelTree1" type="com.internet.cms.model.ChannelTree">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="pid" property="pid" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 栏目对象 -->
+	<resultMap id="Channel1" type="com.internet.cms.model.Channel">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="custom_link" property="customLink" jdbcType="VARCHAR" />
+		<id column="custom_link_url" property="customLinkUrl" jdbcType="VARCHAR" />
+		<id column="type" property="type" jdbcType="VARCHAR" />
+		<id column="is_index" property="isIndex" jdbcType="VARCHAR" />
+		<id column="is_top_nav" property="isTopNav" jdbcType="VARCHAR" />
+		<id column="recommend" property="recommend" jdbcType="VARCHAR" />
+		<id column="status" property="status" jdbcType="VARCHAR" />
+		<id column="orders" property="orders" jdbcType="VARCHAR" />
+		<id column="pid" property="pid" jdbcType="VARCHAR" />
+		<id column="nav_order" property="navOrder" jdbcType="VARCHAR" />
+		<id column="type" property="catalogType" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 添加群组栏目信息 -->
+	<insert id="addGroupChannel">
+		insert into t_group_channel(g_id,c_id)values( #{groupId},#{channelId})
+	</insert>
+	
+	<!-- 根据用户id和群组id获取用户群组对应关系 -->
+	<select id="loadGroupChannel" resultMap="GroupChannel">
+		select gc.id,gc.g_id,gc.c_id from t_group_channel gc where gc.g_id = #{groupId} and gc.c_id = #{channelId}
+	</select>
+	
+	<!-- 根据群组id获取某个组的所有管理栏目的id集合 -->
+	<select id="listGroupChannelIds" resultMap="GroupChannel">
+		select gc.c_id from t_group_channel gc where gc.g_id = #{groupId}
+	</select>
+	
+	<!-- 获取某个组的栏目树 -->
+	<select id="generateGroupChannelTree" resultMap="ChannelTree1">
+		select c.id as id,c.name as name,c.pid as pid from t_group_channel gc left join t_channel c on(gc.c_id = c.id) where gc.g_id = #{groupId}
+	</select>
+	<!-- 获取某个用户的栏目树 -->
+	<select id="generateUserChannelTree" resultMap="ChannelTree1">
+		select c.id as id,c.name as name,c.pid as pid from t_group_channel gc left join t_channel c on(gc.c_id = c.id) left join t_user_group ug on(gc.g_id = ug.g_id) 
+		where ug.u_id = #{userId}
+	</select>
+	
+	<!-- 删除群组栏目 -->
+	<delete id="deleteGroupChannel">
+		delete from t_group_channel where g_id= #{groupId} and c_id= #{channelId}
+	</delete>
+	
+	<!-- 清空组所管理的栏目 -->
+	<delete id="clearGroupChannel">
+		delete from t_group_channel where g_id = #{gourpId}
+	</delete>
+	
+	<delete id="deleteChannelGroups">
+		delete from t_group_channel where c_id= #{channelId}
+	</delete>
+	
+</mapper>

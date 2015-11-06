@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.commonlink.ICommonlinkTypeDao">
+	<resultMap id="CommonlinkType" type="com.internet.cms.model.commonlink.CommonlinkType">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="userId" property="userId" jdbcType="VARCHAR" />
+		<id column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<id column="lastmodifyDate" property="lastmodifyDate" jdbcType="VARCHAR" />
+		<id column="orderId" property="orderId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 添加公共链接分类 -->	
+	<insert id="addCommonlinkeType" parameterType="com.internet.cms.model.commonlink.CommonlinkType">
+		insert into t_commonlink_type 
+			(id,name,userId,createDate,lastmodifyDate,orderId)
+		values
+			(#{id},#{name},#{userId},#{createDate},#{lastmodifyDate},#{orderId})
+	</insert>
+	
+	<!-- 删除公共链接分类 -->	
+	<delete id="deleteCommonlinkType" parameterType="com.internet.cms.model.commonlink.CommonlinkType">
+		delete from t_commonlink_type where id = #{id} and userId = #{userId}
+	</delete>
+	
+	<!-- 更新公共链接分类 -->	
+	<update id="updateCommonlinkType" parameterType="com.internet.cms.model.commonlink.CommonlinkType">
+		update t_commonlink_type set name = #{name}, lastmodifyDate = #{lastmodifyDate} where id = #{id} and userId = #{userId}
+	</update>
+	
+	<!-- 根据用户id查询用户公共链接分类列表 -->
+	<select id="findCommonlinkTypeList" parameterType="com.internet.cms.model.commonlink.CommonlinkType" resultMap="CommonlinkType">
+		select 
+			t.id, 
+			t.name,
+			t.userId,
+			date_format(t.createDate,'%Y-%m-%d %H:%i:%s') as createDate,
+			date_format(t.lastmodifyDate,'%Y-%m-%d %H:%i:%s') as lastmodifyDate,
+			t.orderId as orderId
+		from t_commonlink_type t where t.userId = #{userId}
+	</select>
+	
+	<select id="findCommonlinkTypeCountByName" parameterType="com.internet.cms.model.commonlink.CommonlinkType" resultType="int">
+		select 
+			count(1) as count
+		from t_commonlink_type t where t.userId = #{userId} and t.name = #{name}
+	</select>
+	
+	<select id="getMaxCommonlinkTypeOrderId" parameterType="com.internet.cms.model.commonlink.CommonlinkType" resultType="Integer">
+		select 
+			max(t.orderId)
+		from t_commonlink_type t where t.userId = #{userId}
+	</select>
+	
+	<select id="findCommonlinkTypeCount" parameterType="com.internet.cms.model.commonlink.CommonlinkType" resultType="int">
+		select 
+			count(1) as count
+		from t_commonlink_type t where t.userId = #{userId}
+	</select>
+	
+	
+</mapper>

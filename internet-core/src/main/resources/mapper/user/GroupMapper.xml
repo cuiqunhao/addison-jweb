@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.user.IGroupDao">
+	<resultMap id="Group" type="com.internet.cms.model.Group">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="descr" property="descr" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 获取群组总数 -->
+	<select id="findGroupCount" resultType="int">
+		select count(*) from t_group g
+	</select>
+	
+	<!-- 获取用户分页列表集合信息  -->
+	<select id="findGroup" resultMap="Group">
+		select g.* from t_group g
+	</select>
+	
+	<!-- 添加群组 -->
+	<insert id="add" parameterType="com.internet.cms.model.Group">
+		insert into t_group(name,descr) values (#{name},#{descr})
+	</insert>
+	
+	<!-- 更新群组 -->
+	<update id="update" parameterType="com.internet.cms.model.Group">
+		update t_group g set g.name=#{name}, g.descr=#{descr} where g.id = #{id}
+	</update>
+	
+	<!-- 根据群组id删除群组信息-->
+	<delete id="delete">
+		delete from t_group where id = #{groupId}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	<!-- 获取所有群组列表信息 -->
+	<select id="listGroup" resultMap="Group">
+		select g.* from t_group g
+	</select>
+	
+	<!-- 根据指定群组id获取群组信息 -->
+	<select id="load" resultMap="Group" parameterType="int">
+		select g.id,g.name,g.descr from t_group g where g.id = #{id}
+	</select>
+	
+	<select id="listGroupsByUid" resultMap="Group" parameterType="int">
+		select g.id as id, 
+		g.descr as descr, 
+		g.name as name from t_user_group ug inner join t_group g on ug.g_id=g.id where ug.u_id= #{uid}
+	</select>
+	
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.IAttachmentDao">
+	<!-- 附件对象 -->
+	<resultMap id="Attachment" type="com.internet.cms.model.Attachment">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="new_name" property="newName" jdbcType="VARCHAR" />
+		<id column="old_name" property="oldName" jdbcType="VARCHAR" />
+		<id column="type" property="type" jdbcType="VARCHAR" />
+		<id column="suffix" property="suffix" jdbcType="VARCHAR" />
+		<id column="size" property="size" jdbcType="VARCHAR" />
+		<id column="is_index_pic" property="isIndexPic" jdbcType="VARCHAR" />
+		<id column="is_img" property="isImg" jdbcType="VARCHAR" />
+		<id column="is_attach" property="isAttach" jdbcType="VARCHAR" />
+		<id column="tid" property="tid" jdbcType="VARCHAR" />
+		<!-- 文档标题 -->
+		<id column="title" property="title" jdbcType="VARCHAR"/>
+	</resultMap>
+	<!-- 添加附件 -->
+	<insert id="add" parameterType="com.internet.cms.model.Attachment" useGeneratedKeys="true" keyProperty="id">
+		insert into t_attachment
+			(new_name,old_name,type,suffix,size,is_index_pic,is_img,is_attach)
+		values
+			(#{newName},#{oldName},#{type},#{suffix},#{size},#{isIndexPic},#{isImg},#{isAttach})
+	</insert>
+	
+	<!-- 根据附件id加载附件信息 -->
+	<select id="load" resultMap="Attachment">
+		select t.id,t.new_name,t.old_name,t.type,t.suffix,t.size,t.is_index_pic,t.is_img,t.is_attach,t.tid from t_attachment t where t.id = #{id}
+	</select>
+	
+	<!-- 更新附件信息 -->
+	<update id="update" parameterType="com.internet.cms.model.Attachment">
+		update t_attachment 
+		set 
+			new_name = #{newName}, 
+			old_name = #{oldName}, 
+			type = #{type}, 
+			suffix = #{suffix}, 
+			size = #{size}, 
+			is_index_pic = #{isIndexPic},
+			is_img = #{isImg}, 
+			is_attach = #{isAttach}, 
+			tid = #{tid} 
+		where id = #{id}
+	</update>
+	
+	<!-- 根据文章id获取文章附件列表信息 -->
+	<select id="listByTopic" resultMap="Attachment">
+		select t.id,t.new_name,t.old_name,t.type,t.suffix,t.size,t.is_index_pic,t.is_img,t.is_attach,t.tid from t_attachment t where t.tid = #{tid}
+	</select>
+	
+	<!-- 删除文章id删除附件信息 -->
+	<delete id="deleteByTopic">
+		delete from t_attachment where tid = #{tid}
+	</delete>
+	
+	<!-- 根据附件id删除附件信息 -->
+	 <delete id="delete">
+	 	delete from t_attachment where id = #{id}
+	 </delete>
+	 
+	 <select id="listAllIndexPicCount" resultType="int">
+	 	select  count(*) from t_attachment a,t_topic t where a.is_img = '1' and a.tid = t.id and t.`status` = '1';
+	 </select>
+	 
+	 <select id="listAllIndexPic" resultMap="Attachment">
+	 	select a.id,a.new_name,a.old_name,a.type,a.suffix,a.size,a.is_index_pic,a.is_img,a.is_attach,a.tid, t.title as title from t_attachment a,t_topic t where a.is_img = '1' and a.tid = t.id and t.`status` = '1';
+	 </select>
+	 
+	 <select id="listAttachByTopic" resultMap="Attachment">
+	 	select t.id,t.new_name,t.old_name,t.type,t.suffix,t.size,t.is_index_pic,t.is_img,t.is_attach,t.tid from t_attachment t  
+	 	where t.tid= #{tid} and t.is_attach = 1
+	 </select>
+	
+	
+	
+</mapper>

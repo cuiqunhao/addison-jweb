@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.subscribe.ISubscribeTypeDao">
+	<resultMap id="Subscribe" type="com.internet.cms.model.subscribe.Subscribe">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="url" property="url" jdbcType="VARCHAR" />
+		<id column="typeId" property="typeId" jdbcType="VARCHAR" />
+		<id column="userId" property="userId" jdbcType="VARCHAR" />
+		<id column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<id column="lastmodifyDate" property="lastmodifyDate" jdbcType="VARCHAR" />
+		<id column="orderId" property="orderId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 添加公共链接-->	
+	<insert id="addSubscribe" parameterType="com.internet.cms.model.subscribe.Subscribe">
+		insert into t_subscribe
+			(id,name,url,typeId,userId,createDate,lastmodifyDate,newWin,orderId,position)
+		values
+			(#{id},#{name},#{url},#{typeId},#{userId},#{createDate},#{lastmodifyDate},#{newWin},#{orderId},#{position})
+	</insert>
+	
+	<!-- 删除公共链接 -->
+	<delete id="deleteSubscribe" parameterType="com.internet.cms.model.subscribe.Subscribe">
+		delete from t_subscribe where id = #{id} and userId = #{userId}
+	</delete>
+	
+	<!-- 更新公共链接 -->	
+	<update id="updateSubscribe" parameterType="com.internet.cms.model.subscribe.Subscribe">
+		update t_subscribe 
+	    set name = #{name}, 
+			url = #{url},
+			typeId = #{typeId},
+			lastmodifyDate = #{lastmodifyDate},
+			newWin = #{newWin},
+			position = #{position}
+		where id = #{id} and userId = #{userId}
+	</update>
+	
+	<!-- 根据用户id查询用户公共链接列表 -->
+	<select id="findSubscribeList" parameterType="com.internet.cms.model.subscribe.Subscribe" resultMap="Subscribe">
+		select 
+			t.*
+		from t_subscribe t where t.userId = #{userId}
+		and t.typeId in
+		 <foreach item="item" index="index" collection="types" 
+                open="(" separator="," close=")">
+               #{item}
+          </foreach>
+	</select>
+	
+	
+	<select id="findSubscribeCountByNameUrl" parameterType="com.internet.cms.model.subscribe.Subscribe" resultType="int">
+		select 
+			count(1) as count
+		from t_subscribe t where t.userId = #{userId} and t.name = #{name} and t.url = #{url}
+	</select>
+	 
+	<select id="getMaxSubscribeOrderId" parameterType="com.internet.cms.model.subscribe.Subscribe" resultType="Integer">
+		select 
+			max(t.orderId)
+		from t_subscribe t where t.userId = #{userId}
+	</select>
+	
+	<select id="findSubscribeCountByTypeId" parameterType="com.internet.cms.model.subscribe.Subscribe" resultType="int">
+		select count(1) from t_subscribe t where t.userId = #{userId} and t.typeId = #{typeId}
+	</select>
+	
+	<select id="findSubscribeListByTypeId" parameterType="com.internet.cms.model.subscribe.Subscribe" resultMap="Subscribe">
+		select 
+			t.*
+		from t_subscribe t where t.userId = #{userId} and t.typeId = #{typeId}
+	</select>
+	
+	
+</mapper>

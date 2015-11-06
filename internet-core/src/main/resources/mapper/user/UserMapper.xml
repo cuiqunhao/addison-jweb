@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.user.IUserDao">
+	<resultMap id="User" type="com.internet.cms.model.User">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<id column="username" property="username" jdbcType="VARCHAR" />
+		<id column="password" property="password" jdbcType="VARCHAR" />
+		<id column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<id column="email" property="email" jdbcType="VARCHAR" />
+		<id column="phone" property="phone" jdbcType="VARCHAR" />
+		<id column="status" property="status" jdbcType="VARCHAR" />
+		<id column="create_date" property="createDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="loadByUsername" resultMap="User" parameterType="string">
+		select 
+			u.id,u.username,u.password,u.nickname,u.email,u.phone,u.status,u.create_date 
+		from t_user u where username= #{username}
+	</select>
+	
+	<select id="findUserCount" resultType="int">
+		select 
+			 count(1) 
+		from t_user u
+	</select>
+	
+	<select id="findUser" resultMap="User">
+		select 
+			u.id,u.username,u.password,u.nickname,u.email,u.phone,u.status,u.create_date 
+		from t_user u
+	</select>
+	
+	<insert id="add" parameterType="com.internet.cms.model.User">
+		insert into t_user(username,password,nickname,email,phone,status,create_date)values(#{username},#{password},#{nickname},#{email},#{phone},#{status},#{createDate})
+	</insert>
+	
+	<select id="load" resultMap="User" parameterType="int">
+		select 
+			u.id,u.username,u.password,u.nickname,u.email,u.phone,u.status,u.create_date 
+		from t_user u where u.id = #{id}
+	</select>
+	
+	<update id="update" parameterType="com.internet.cms.model.User">
+		update t_user u set u.nickname = #{nickname},u.email = #{email},u.phone = #{phone},u.status = #{status} where u.id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_user where id = #{userId}
+	</delete>
+	
+	<select id="listUsersByRid" resultMap="User" parameterType="int">
+		select 
+		u.id,
+		u.username,
+		u.password,
+		u.nickname,
+		u.email,
+		u.phone,
+		u.status,
+		u.create_date 
+		from t_user_role ur inner join t_user u on ur.u_id = u.id where ur.r_id= #{roleId}
+	</select>
+	
+	<select id="listUsersByGid" resultMap="User" parameterType="int">
+		select 
+		u.id,
+		u.username,
+		u.password,
+		u.nickname,
+		u.email,
+		u.phone,
+		u.status,
+		u.create_date 
+		from t_user_group ug inner join t_user u on ug.u_id = u.id where ug.g_id= #{groupId}
+	</select>
+</mapper>

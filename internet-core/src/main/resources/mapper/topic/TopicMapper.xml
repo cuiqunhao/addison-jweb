@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.topic.ITopicDao">
+	<!-- 文章对象 -->
+	<resultMap id="Topic" type="com.internet.cms.model.Topic">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="title" property="title" jdbcType="VARCHAR" />
+		<id column="keyword" property="keyword" jdbcType="VARCHAR" />
+		<id column="status" property="status" jdbcType="VARCHAR" />
+		<id column="recommend" property="recommend" jdbcType="VARCHAR" />
+		<id column="content" property="content" jdbcType="VARCHAR" />
+		<id column="summary" property="summary" jdbcType="VARCHAR" />
+		<id column="channel_pic_id" property="channelPicId" jdbcType="VARCHAR" />
+		<id column="publish_date" property="publishDate" jdbcType="VARCHAR" />
+		<id column="create_date" property="createDate" jdbcType="VARCHAR" />
+		<id column="author" property="author" jdbcType="VARCHAR" />
+		<id column="cname" property="cname" jdbcType="VARCHAR" />
+		<id column="cid" property="cid" jdbcType="VARCHAR" />
+		<id column="uid" property="uid" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="findTopCommonSql">
+		<if test="status != null and status != ''" >
+			and t.status = #{status}
+		</if>
+		<if test="status == null or status == ''" >
+			and t.status = #{status}
+		</if>
+		<if test="title != null and title != ''">
+			and t.title like '%${title}%'
+		</if>
+		<if test="uid != null and uid>0">
+			and t.uid = #{uid}
+		</if>
+		<if test="cid != null and cid>0">
+			and t.cid = #{cid}
+		</if>
+	</sql>
+	<select id="findCount" resultType="int">
+		select count(1) from t_topic t where 1=1
+		<include refid="findTopCommonSql"/>
+	</select>
+	<!-- 根据用户，栏目和标题和状态进行检索 -->
+	<select id="find" resultMap="Topic">
+		select t.id,t.title,t.keyword,t.status,t.recommend,t.summary,t.channel_pic_id,t.publish_date,t.create_date,t.author,t.cname,t.cid,t.uid from t_topic t where 1=1
+		<include refid="findTopCommonSql"/>
+	</select>
+
+	<!-- 添加文章 -->
+	<insert id="add" parameterType="com.internet.cms.model.Topic" useGeneratedKeys="true" keyProperty="id">
+		insert into t_topic
+			(title,keyword,status,recommend,summary,channel_pic_id,publish_date,create_date,author,cname,cid,uid,content)
+		values
+			(#{title},#{keyword},#{status},#{recommend},#{summary},#{channelPicId},#{publishDate},#{createDate},#{author},#{cname},#{cid},#{uid},#{content})
+	</insert>
+	
+	<!-- 根据文章id获取文章对象信息 -->
+	<select id="load" resultMap="Topic">
+		select t.id,t.title,t.keyword,t.status,t.recommend,t.summary,t.channel_pic_id,t.publish_date,t.create_date,t.author,t.cname,t.cid,t.uid from t_topic t where 1=1 and t.id = #{id}
+	</select>
+	
+	<!-- 更新文章 -->
+	<update id="update" parameterType="com.internet.cms.model.Topic">
+		update t_topic set 
+			title = #{title},
+			keyword = #{keyword} ,
+			status = #{status},
+			recommend = #{recommend},
+			summary = #{summary},
+			channel_pic_id = #{channelPicId},
+			publish_date = #{publishDate},
+			create_date= #{createDate}, 
+			author = #{author} ,
+			cname = #{cname},
+			cid = #{cid},
+			uid = #{uid}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_topic where id = #{id}
+	</delete>
+	
+	<select id="listTopicsByChannel" resultMap="Topic">
+		select t.id,t.title,t.keyword,t.status,t.recommend,t.summary,t.channel_pic_id,t.publish_date,t.create_date,t.author,t.cname,t.cid,t.uid from t_topic t where t.cid = #{cid}
+	</select>
+	
+	<select id="getExistKeyword2Map" resultType="String">
+		select t.keyword from t_topic t
+	</select>
+	
+	<select id="loadLastedTopicByColumn" resultMap="Topic">
+		select t.id,t.title,t.keyword,t.status,t.recommend,t.summary,t.channel_pic_id,t.publish_date,t.create_date,t.author,t.cname,t.cid,t.uid from t_topic t where t.status=1 and t.cid = #{cid} order by t.publish_date desc
+	</select>
+	
+	<select id="listTopicByChannelAndNumber" resultMap="Topic">
+		select t.id,t.title,t.keyword,t.status,t.recommend,t.summary,t.channel_pic_id,t.publish_date,t.create_date,t.author,t.cname,t.cid,t.uid from t_topic t  where t.status=1 and t.cid=#{cid} order by t.publish_date desc limit 0,#{num} 	
+	</select>
+	
+</mapper>

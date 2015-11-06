@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.task.ITaskDao">
+	<resultMap id="Task" type="com.internet.cms.model.task.Task">
+	    <id column="taskuuid" property="taskuuid" jdbcType="VARCHAR" />
+		<id column="applicant" property="applicant" jdbcType="VARCHAR" />
+		<id column="appname" property="appname" jdbcType="VARCHAR" />
+		<id column="appurl" property="appurl" jdbcType="VARCHAR" />
+		<id column="handler" property="handler" jdbcType="VARCHAR" />
+		<id column="taskdesc" property="taskdesc" jdbcType="VARCHAR" />
+		<id column="taskurl" property="taskurl" jdbcType="VARCHAR" />
+		<id column="time" property="time" jdbcType="VARCHAR" />
+		<id column="type" property="type" jdbcType="VARCHAR" />
+		<id column="createtime" property="createtime" jdbcType="VARCHAR" />
+		<id column="deleteflag" property="deleteflag" jdbcType="INTEGER" />
+		<id column="accessmobile" property="accessmobile" jdbcType="INTEGER" />
+		<id column="reserve1" property="reserve1" jdbcType="VARCHAR" />
+		<id column="reserve2" property="reserve2" jdbcType="VARCHAR" />
+		<id column="reserve3" property="reserve3" jdbcType="VARCHAR" />
+		<id column="reserve4" property="reserve4" jdbcType="VARCHAR" />
+		<id column="reserve5" property="reserve5" jdbcType="VARCHAR" />
+		<id column="reserve6" property="reserve6" jdbcType="VARCHAR" />
+		<id column="reserve7" property="reserve7" jdbcType="VARCHAR" />
+		<id column="reserve8" property="reserve8" jdbcType="VARCHAR" />
+		<id column="reserve9" property="reserve9" jdbcType="VARCHAR" />
+		<id column="reserve10" property="reserve10" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 添加公共链接-->	
+	<insert id="addTask" parameterType="com.internet.cms.model.task.Task">
+		insert into t_task (
+			taskuuid,
+			applicant,
+			appname,
+			appurl,
+			handler,
+			taskdesc,
+			taskurl,
+			time,
+			type,
+			createtime,
+			deleteflag,
+			accessmobile,
+			reserve1,
+			reserve2,
+			reserve3,
+			reserve4,
+			reserve5,
+			reserve6,
+			reserve7,
+			reserve8,
+			reserve9,
+			reserve10
+		)
+		values (
+			#{taskuuid},
+			#{applicant},
+			#{appname},
+			#{appurl},
+			#{handler},
+			#{taskdesc},
+			#{taskurl},
+			#{time},
+			#{type},
+			#{createtime},
+			#{deleteflag},
+			#{accessmobile},
+			#{reserve1},
+			#{reserve2},
+			#{reserve3},
+			#{reserve4},
+			#{reserve5},
+			#{reserve6},
+			#{reserve7},
+			#{reserve8},
+			#{reserve9},
+			#{reserve10}
+		)
+	</insert>
+	
+	<!-- 删除公共链接 -->
+	<delete id="deleteTask" parameterType="com.internet.cms.model.task.Task">
+		delete from t_task where taskuuid = #{taskuuid} and createtime > #{encode}
+	</delete>
+	
+	<!-- 更新公共链接 -->	
+	<update id="updateTask" parameterType="com.internet.cms.model.task.Task">
+		update t_task set 
+	    	applicant = #{applicant},
+			appname = #{appname},
+			appurl = #{appurl},
+			handler = #{handler},
+			taskdesc = #{taskdesc},
+			taskurl = #{taskurl},
+			time = #{time},
+			type = #{type},
+			createtime = #{createtime},
+			deleteflag = #{deleteflag},
+			accessmobile = #{accessmobile},
+			reserve1 = #{reserve1},
+			reserve2 = #{reserve2},
+			reserve3 = #{reserve3},
+			reserve4 = #{reserve4},
+			reserve5 = #{reserve5},
+			reserve6 = #{reserve6},
+			reserve7 = #{reserve7},
+			reserve8 = #{reserve8},
+			reserve9 = #{reserve9},
+			reserve10 = #{reserve10}
+		where taskuuid = #{taskuuid}
+	</update>
+	
+	
+	<!-- 查询我创建的待办应用列表总数(reserve2) -->
+	<select id="findApplicantAppCount" parameterType="com.internet.cms.model.task.Task" resultType="int">
+		select count(1) from (
+			select t.appname from t_task t where t.reserve2 = #{reserve2}  group by t.appname
+		) as tt
+	</select>
+	
+	<!-- 查询我创建的待办应用列表(reserve2) -->
+	<select id="findApplicantAppList" parameterType="com.internet.cms.model.task.Task" resultMap="Task">
+		select t.appname,t.createtime,count(1) as reserve10 from t_task t where t.reserve2 = #{reserve2} group by t.appname
+	</select>
+
+	<!-- 查询我申请的待办应用列表总数(reserve1) -->
+	<select id="findHandlerAppCount" parameterType="com.internet.cms.model.task.Task" resultType="int">
+		select count(1) from (
+			select t.appname from t_task t where t.reserve1 = #{reserve1}  group by t.appname
+		) as tt
+	</select>
+	
+	<!-- 查询我申请的待办应用列表(reserve1) -->
+	<select id="findHandlerAppList" parameterType="com.internet.cms.model.task.Task" resultMap="Task">
+		select t.appname,t.createtime,count(1) as reserve10 from t_task t where t.reserve1 = #{reserve1} group by t.appname
+	</select>
+	
+	<!-- 查询我创建的待办应用列表总数(reserve2) -->
+	<select id="findApplicantTaskCount" parameterType="com.internet.cms.model.task.Task" resultType="int">
+			select count(1) from t_task t where t.reserve2 = #{reserve2} and t.appname = #{appname}
+	</select>
+	
+	<!-- 查询我创建的待办应用列表(reserve2) -->
+	<select id="findApplicantTaskList" parameterType="com.internet.cms.model.task.Task" resultMap="Task">
+		select t.* from t_task t where t.reserve2 = #{reserve2} and t.appname = #{appname}
+	</select>
+	
+	<!-- 查询我申请的待办应用列表总数(reserve1) -->
+	<select id="findHandlerTaskCount" parameterType="com.internet.cms.model.task.Task" resultType="int">
+		select count(1) from t_task t where t.reserve1 = #{reserve1} and t.appname = #{appname}
+	</select>
+	
+	<!-- 查询我申请的待办应用列表(reserve1) -->
+	<select id="findHandlerTaskList" parameterType="com.internet.cms.model.task.Task" resultMap="Task">
+		select t.* from t_task t where t.reserve1 = #{reserve1} and t.appname = #{appname}
+	</select>
+	
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.dept.IDeptDao">
+	<!-- 部门对象 -->
+	<resultMap id="Dept" type="com.internet.cms.model.dept.Dept">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<id column="name_en" property="name_en" jdbcType="VARCHAR" />
+		<id column="name_cn" property="name_cn" jdbcType="VARCHAR" />
+		<id column="status" property="status" jdbcType="VARCHAR" />
+		<id column="orders" property="orders" jdbcType="VARCHAR" />
+		<id column="pid" property="pid" jdbcType="VARCHAR" />
+		<id column="createtime" property="createtime" jdbcType="VARCHAR" />
+		<id column="lastupdatetime" property="lastupdatetime" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 根据部门id获取当前部门信息 -->
+	<select id="load" resultMap="Dept">
+		select
+			c.id,
+			c.name_en,
+			c.name_cn,
+			c.status,
+			c.orders,
+			c.pid,
+			date_format(c.createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+			date_format(c.lastupdatetime,'%Y-%m-%d %H:%i:%s') as lastupdatetime
+		from t_dept c where  c.id = #{id}
+	</select>
+	
+	<!-- 根据父部门id获取子部门列表 -->
+	<select id="listByParent" resultMap="Dept">
+		<if test="pid == null or pid == 0">
+			select 
+				c.id,
+				c.name_en,
+				c.name_cn,
+				c.status,
+				c.orders,
+				c.pid,
+				date_format(c.createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+				date_format(c.lastupdatetime,'%Y-%m-%d %H:%i:%s') as lastupdatetime
+			from t_dept c where c.pid is null order by c.orders
+		</if>
+		<if test="pid != null and pid != 0">
+			select
+				c.id,
+				c.name_en,
+				c.name_cn,
+				c.status,
+				c.orders,
+				c.pid,
+				date_format(c.createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+				date_format(c.lastupdatetime,'%Y-%m-%d %H:%i:%s') as lastupdatetime
+			from t_dept c where c.pid = #{pid} order by c.orders
+		</if>
+	</select>
+	
+	<select id="listByParentCount" resultType="int">
+		<if test="pid == null or pid == 0">
+			select 
+				count(1)
+			from t_dept c where c.pid is null
+		</if>
+		<if test="pid != null and pid != 0">
+			select
+				count(1)
+			from t_dept c where c.pid = #{pid}
+		</if>
+	</select>
+	
+	<!-- 根据父部门获取子部门的最大的排序号 -->
+	<select id="getMaxOrderByParent" resultType="Integer">
+		<if test="pid == null or pid == 0">
+			select IFNULL(max(c.orders),0) from t_dept c where c.pid is null
+		</if>
+		<if test="pid != null and pid != 0">
+			select IFNULL(max(c.orders),0) from t_dept c where c.pid = #{pid}
+		</if>
+	</select>
+	
+	<!-- 添加部门 -->
+	<insert id="add" parameterType="com.internet.cms.model.dept.Dept">
+		insert into t_dept(
+			name_en,
+			name_cn,
+			status,
+			orders,
+			pid,
+			createtime,
+			lastupdatetime
+		) values
+		<if test="pid == null or pid == 0">
+			(
+				#{name_en},
+				#{name_cn},
+				#{status},
+				#{orders},
+				null,
+				#{createtime},
+				#{lastupdatetime}
+			)
+		</if>
+		<if test="pid != null and pid != 0">
+			(
+				#{name_en},
+				#{name_cn},
+				#{status},
+				#{orders},
+				#{pid},
+				#{createtime},
+				#{lastupdatetime}
+			)
+		</if>	
+	</insert>
+	
+	<!-- 更新部门 -->
+	<update id="update" parameterType="com.internet.cms.model.dept.Dept">
+		update t_dept set 
+			name_en=#{name_en},
+			name_cn=#{name_cn},
+			status=#{status},
+			createtime=#{createtime},
+			lastupdatetime=#{lastupdatetime}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_dept where id = #{id}
+	</delete>
+	
+	<select id="findDeptCountByName" resultType="int">
+		select
+			count(1)
+		from t_dept c where c.name_en = #{name_en} or c.name_cn = #{name_cn}
+	</select>
+</mapper>
