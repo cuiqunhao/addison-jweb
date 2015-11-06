@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.internet.cms.dao.job.IJobDao">
+	<resultMap id="Job" type="com.internet.cms.model.job.Job">
+		<id column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="task_code" property="task_code" jdbcType="VARCHAR"/>
+		<result column="task_type" property="task_type" jdbcType="VARCHAR"/>
+		<result column="task_name" property="task_name" jdbcType="VARCHAR"/>
+		<result column="job_class" property="job_class" jdbcType="VARCHAR"/>
+		<result column="execycle" property="execycle" jdbcType="VARCHAR"/>
+		<result column="day_of_month" property="day_of_month" jdbcType="VARCHAR"/>
+		<result column="day_of_week" property="day_of_week" jdbcType="VARCHAR"/>
+		<result column="hour" property="hour" jdbcType="VARCHAR"/>
+		<result column="minute" property="minute" jdbcType="VARCHAR"/>
+		<result column="interval_hour" property="interval_hour" jdbcType="VARCHAR"/>
+		<result column="interval_minute" property="interval_minute" jdbcType="VARCHAR"/>
+		<result column="task_interval_unit" property="task_interval_unit" jdbcType="VARCHAR"/>
+		<result column="cron_expression" property="cron_expression" jdbcType="VARCHAR"/>
+		<result column="is_enable" property="is_enable" jdbcType="VARCHAR"/>
+		<result column="task_remark" property="task_remark" jdbcType="VARCHAR"/>
+		<result column="createtime" property="createtime" jdbcType="VARCHAR"/>
+		<result column="lastupdatetime" property="lastupdatetime" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 新增-->
+	<insert id="add" parameterType="com.internet.cms.model.job.Job">
+		insert into t_job(
+			task_code,	
+			task_type,	
+			task_name,	
+			job_class,	
+			execycle,	
+			day_of_month,	
+			day_of_week,	
+			hour,	
+			minute,	
+			interval_hour,	
+			interval_minute,	
+			task_interval_unit,	
+			cron_expression,	
+			is_enable,	
+			task_remark,	
+			createtime,
+			lastupdatetime
+		) values (
+			#{task_code},	
+			#{task_type},	
+			#{task_name},	
+			#{job_class},	
+			#{execycle},	
+			#{day_of_month},	
+			#{day_of_week},	
+			#{hour},	
+			#{minute},	
+			#{interval_hour},	
+			#{interval_minute},	
+			#{task_interval_unit},	
+			#{cron_expression},	
+			#{is_enable},	
+			#{task_remark},	
+			#{createtime},
+			#{lastupdatetime}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="com.internet.cms.model.job.Job">
+		delete from t_job where id = #{id}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="com.internet.cms.model.job.Job">
+		update  t_job
+			set 
+				id = #{id},
+				task_code = #{task_code},
+				task_type = #{task_type},
+				task_name = #{task_name},
+				job_class = #{job_class},
+				execycle = #{execycle},
+				day_of_month = #{day_of_month},
+				day_of_week = #{day_of_week},
+				hour = #{hour},
+				minute = #{minute},
+				interval_hour = #{interval_hour},
+				interval_minute = #{interval_minute},
+				task_interval_unit = #{task_interval_unit},
+				cron_expression = #{cron_expression},
+				is_enable = #{is_enable},
+				task_remark = #{task_remark},
+				lastupdatetime = #{lastupdatetime}
+			where id = #{id}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="load"  resultMap="Job">
+		select 
+			id,	
+			task_code,	
+			task_type,	
+			task_name,	
+			job_class,	
+			execycle,	
+			day_of_month,	
+			day_of_week,	
+			hour,	
+			minute,	
+			interval_hour,	
+			interval_minute,	
+			task_interval_unit,	
+			cron_expression,	
+			is_enable,	
+			task_remark,	
+			createtime,
+			lastupdatetime
+		from 
+			t_job
+		where 
+			id = #{id}
+	</select>
+	
+	<select id="loadByTaskCode"  resultMap="Job">
+		select 
+			id,	
+			task_code,	
+			task_type,	
+			task_name,	
+			job_class,	
+			execycle,	
+			day_of_month,	
+			day_of_week,	
+			hour,	
+			minute,	
+			interval_hour,	
+			interval_minute,	
+			task_interval_unit,	
+			cron_expression,	
+			is_enable,	
+			task_remark,	
+			createtime,
+			lastupdatetime
+		from 
+			t_job
+		where 
+			task_code = #{taskcode}
+	</select>
+	
+	<select id="listJobCount" resultType="int">
+		select count(1) from t_job a
+	</select>
+	
+	<select id="listJob" resultMap="Job">
+		select
+				a.id,	
+				a.task_code,	
+				a.task_type,	
+				a.task_name,	
+				a.job_class,	
+				a.execycle,	
+				a.day_of_month,	
+				a.day_of_week,	
+				a.hour,	
+				a.minute,	
+				a.interval_hour,	
+				a.interval_minute,	
+				a.task_interval_unit,	
+				a.cron_expression,	
+				a.is_enable,	
+				a.task_remark,	
+				a.createtime,
+				a.lastupdatetime
+		from 
+				t_job a
+	</select>
+	
+</mapper>

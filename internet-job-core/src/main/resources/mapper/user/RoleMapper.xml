@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.internet.cms.dao.user.IRoleDao">
+	<resultMap id="Role" type="com.internet.cms.model.Role">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<id column="name" property="name" jdbcType="VARCHAR" />
+		<id column="role_type" property="roleType" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 获取所有的角色列表信息 -->
+	<select id="listRoles" resultMap="Role">
+		select t.id,t.name,t.role_type from t_role t 
+	</select>
+
+	<!-- 根据用户角色对应关系获取登录用户角色列表信息 -->
+	<select id="listRole" resultMap="Role" parameterType="string">
+		select r.role_type from t_role r where r.id in ${ids}
+	</select>
+	
+	<!-- 根据指定角色id获取角色信息 -->
+	<select id="load" resultMap="Role">
+		select r.id,r.name,r.role_type from t_role r where r.id = #{roleId}
+	</select>
+	
+	<!-- 添加角色信息 -->
+	<insert id="add" parameterType="com.internet.cms.model.Role">
+		insert into t_role(name,role_type) values (#{name},#{roleType})
+	</insert>
+	
+	<!-- 更新角色信息 -->
+	<update id="update" parameterType="com.internet.cms.model.Role">
+		update t_role set name = #{name},role_type = #{roleType} where id = #{id}
+	</update>
+	
+	<!-- 删除角色信息 -->
+	<delete id="delete">
+		delete from t_role where id = #{roleId}
+	</delete>
+	
+	<select id="listRolesByUid" resultMap="Role" parameterType="int">
+		select r.id as id, r.name as name, r.role_type as roleType from t_user_role ur inner join t_role r on ur.r_id=r.id where ur.u_id= #{uid}
+	</select>
+	
+</mapper>

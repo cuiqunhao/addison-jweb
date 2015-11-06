@@ -1,0 +1,210 @@
+BODY {
+	FONT-FAMILY: arial
+}
+
+TD {
+	FONT-FAMILY: arial
+}
+
+.p1 {
+	FONT-FAMILY: arial
+}
+
+.p2 {
+	FONT-FAMILY: arial
+}
+
+.i {
+	FONT-FAMILY: arial
+}
+
+BODY {
+	MARGIN: 6px 0px 0px;
+	COLOR: #000;
+	BACKGROUND-COLOR: #fff
+}
+
+TABLE {
+	BORDER-RIGHT: 0px;
+	BORDER-TOP: 0px;
+	BORDER-LEFT: 0px;
+	BORDER-BOTTOM: 0px
+}
+
+TD {
+	FONT-SIZE: 9pt;
+	LINE-HEIGHT: 18px
+}
+
+.f14 {
+	FONT-SIZE: 14px
+}
+
+.f10 {
+	FONT-SIZE: 10.5pt
+}
+
+.f16 {
+	FONT-SIZE: 16px;
+	FONT-FAMILY: Arial
+}
+
+.c {
+	COLOR: #7777cc
+}
+
+.p1 {
+	MARGIN-LEFT: -12pt;
+	LINE-HEIGHT: 120%
+}
+
+.p2 {
+	MARGIN-LEFT: -12pt;
+	WIDTH: 100%;
+	LINE-HEIGHT: 120%
+}
+
+.i {
+	FONT-SIZE: 16px
+}
+
+.t {
+	COLOR: #0000cc;
+	TEXT-DECORATION: none
+}
+
+A.t:hover {
+	TEXT-DECORATION: underline
+}
+
+.p {
+	PADDING-LEFT: 18px;
+	FONT-SIZE: 14px;
+	WORD-SPACING: 4px
+}
+
+.f {
+	PADDING-LEFT: 15px;
+	FONT-SIZE: 100%;
+	WIDTH: 32em;
+	WORD-BREAK: break-all;
+	LINE-HEIGHT: 120%;
+	WORD-WRAP: break-word
+}
+
+.h {
+	MARGIN-LEFT: 8px;
+	WIDTH: 100%
+}
+
+.s {
+	PADDING-LEFT: 10px;
+	WIDTH: 8%;
+	HEIGHT: 25px
+}
+
+.m {
+	FONT-SIZE: 100%;
+	COLOR: #666666
+}
+
+A.m:link {
+	FONT-SIZE: 100%;
+	COLOR: #666666
+}
+
+A.m:visited {
+	COLOR: #660066
+}
+
+.g {
+	FONT-SIZE: 12px;
+	COLOR: #008000
+}
+
+.r {
+	WIDTH: 238px;
+	CURSOR: hand;
+	WORD-BREAK: break-all
+}
+
+.bi {
+	MARGIN-BOTTOM: 12px;
+	HEIGHT: 20px;
+	BACKGROUND-COLOR: #ddeeff
+}
+
+.pl {
+	PADDING-RIGHT: 2px;
+	PADDING-LEFT: 3px;
+	FONT-SIZE: 14px;
+	HEIGHT: 8px
+}
+
+.Tit {
+	FONT-SIZE: 14px;
+	HEIGHT: 21px
+}
+
+.Tit A {
+	COLOR: #261cdc
+}
+
+.fB {
+	FONT-WEIGHT: bold
+}
+
+.mo {
+	FONT-SIZE: 100%;
+	COLOR: #666666;
+	LINE-HEIGHT: 10px
+}
+
+A.mo:link {
+	FONT-SIZE: 100%;
+	COLOR: #666666;
+	LINE-HEIGHT: 10px
+}
+
+A.mo:visited {
+	FONT-SIZE: 100%;
+	COLOR: #666666;
+	LINE-HEIGHT: 10px
+}
+
+.htb {
+	MARGIN-BOTTOM: 5px
+}
+
+#ft {
+	CLEAR: both;
+	BACKGROUND: #e6e6e6;
+	LINE-HEIGHT: 20px;
+	TEXT-ALIGN: center
+}
+
+#ft {
+	FONT-SIZE: 12px;
+	COLOR: #77c;
+	FONT-FAMILY: Arial
+}
+
+#ft {
+	FONT-SIZE: 12px;
+	COLOR: #77c;
+	FONT-FAMILY: Arial
+}
+
+#ft SPAN {
+	COLOR: #666
+}
+
+FORM {
+	Z-INDEX: 9;
+	MARGIN: 0px;
+	POSITION: relative
+}
+
+.jc A {
+	COLOR: #c60a00
+}

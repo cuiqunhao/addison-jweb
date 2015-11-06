@@ -1,0 +1,122 @@
+body {
+	margin: 4px 0
+}
+
+p {
+	margin: 0;
+	padding: 0
+}
+
+img {
+	border: 0
+}
+
+td,p,#u {
+	font-size: 12px
+}
+
+#b,#u,#l td,a {
+	font-family: arial
+}
+
+#kw {
+	font: 16px Verdana;
+	height: 1.78em;
+	padding-top: 2px
+}
+
+#b {
+	height: 30px;
+	padding-top: 4px
+}
+
+#b,#b a {
+	color: #77c
+}
+
+#logpos {
+	padding-right: 10px;
+	line-height: 19px;
+	text-align: right;
+	margin: 0 0 3px !important;
+	margin: 0 0 10px
+}
+
+#sb {
+	height: 2em;
+	width: 5.6em
+}
+
+#km {
+	height: 50px
+}
+
+#l {
+	margin: 0 0 5px 15px
+}
+
+#l td {
+	padding-left: 107px
+}
+
+p,table {
+	width: 650px;
+	border: 0
+}
+
+#l td,#sb,#km {
+	font-size: 14px
+}
+
+#l a,#l b {
+	margin-right: 1.14em
+}
+
+a {
+	color: #00c
+}
+
+a:active {
+	color: #f60
+}
+
+#hp {
+	position: absolute;
+	margin-left: 6px
+}
+
+#lg {
+	margin: -26px 0 -44px
+}
+
+#lk {
+	width: auto;
+	line-height: 18px;
+	vertical-align: top
+}
+
+form {
+	position: relative;
+	z-index: 9
+}
+
+
+.mydiv1{
+	position:absolute;
+	background-color:#0000FF;
+    left:200px; 
+    top:160px; 
+    width:199px; 
+    height:99px; 
+    z-index:2;
+}
+
+.mydiv2{
+	position:absolute;
+	background-color:#00FF00;
+    left:330px; 
+    top:160px; 
+    width:99px; 
+    height:99px; 
+
+}
